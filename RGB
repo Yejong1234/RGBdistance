@@ -1,0 +1,39 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+
+int Min(int a, int b);
+
+int main()
+{
+	int dist[1001][3];//이것은 비용을 저장할 배열
+	int a[1001][3];//이것은 비용을 나타내는 배열
+
+	int T;//총 몇줄
+
+	int i,j;
+
+	scanf_s("%d", &T);//몇 줄 할껀지 받는다.
+
+	for (i = 1; i <= T; i++) {//각 비용들을 받음
+		for (j = 0; j < 3; j++) {
+			scanf_s("%d", &a[i][j]);
+		}
+	}
+	
+	dist[0][0] = dist[0][1] = dist[0][2] = a[0][0] = a[0][1] = a[0][2]= 0;//0은 필요 없으니까 죄다 0으로 초기화
+
+	for (i = 1; i <= T; i++) {
+		
+		dist[i][0] = Min(dist[i - 1][1], dist[i - 1][2])+a[i][0];
+		dist[i][1] = Min(dist[i - 1][0], dist[i - 1][2])+a[i][1];
+		dist[i][2] = Min(dist[i - 1][1], dist[i - 1][0])+a[i][2];
+	}
+
+	printf("%d\n", Min(Min(dist[T][0], dist[T][1]), dist[T][2]));
+}
+
+int Min(int a, int b) {
+	return a < b ? a : b;
+}
